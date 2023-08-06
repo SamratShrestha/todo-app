@@ -29,7 +29,8 @@ hbs.registerHelper("formatDate", function (options) {
 
 hbs.registerHelper("formatDateRender", function (options) {
   console.log(options);
-  let date = new Date(Date.now());
+  let date = new Date();
+  console.log(date);
   if (options) {
     date = new Date(options);
   }
@@ -37,12 +38,14 @@ hbs.registerHelper("formatDateRender", function (options) {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   const formattedDate = `${year}-${month}-${day}`;
-  const formattedTime = date.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-  return `${formattedDate}T${formattedTime}`;
+  // const formattedTime = date.toLocaleTimeString("en-US", {
+  //   hour: "2-digit",
+  //   minute: "2-digit",
+  //   hour12: false,
+  // });
+  const hour = date.getHours().toString().padStart(2, "0");
+  const minute = date.getMinutes().toString().padStart(2, "0");
+  return `${formattedDate}T${hour}:${minute}`;
 });
 
 hbs.registerHelper("if_eql", function (a, b, opts) {

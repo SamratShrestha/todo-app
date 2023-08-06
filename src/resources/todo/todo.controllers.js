@@ -15,9 +15,9 @@ const getIndex = async (req, res) => {
     console.error(e);
   } finally {
     if (req.query.isAjax) {
-      res.render("index", { results, layout: "" });
+      return res.render("index", { results, layout: "" });
     }
-    res.render("index", { results });
+    return res.render("index", { results });
   }
 };
 
@@ -28,7 +28,6 @@ const getCreateTodo = (req, res) => {
 const postCreateTodo = async (req, res, next) => {
   try {
     const postData = req.body;
-    postData = "fdas";
     await new Todo({
       name: postData.name,
       description: postData.description,
@@ -38,6 +37,7 @@ const postCreateTodo = async (req, res, next) => {
     }).save();
     res.redirect("/");
   } catch (e) {
+    console.log(e);
     next(e);
   }
 };
@@ -59,15 +59,17 @@ const putUpdateTodo = async (req, res, next) => {
     });
     res.redirect("/");
   } catch (e) {
+    console.log(e);
     next(e);
   }
 };
 
-const deleteTodo = async (req, res) => {
+const deleteTodo = async (req, res, next) => {
   try {
     await Todo.findByIdAndDelete(req.params.id);
   } catch (e) {
     console.log(e);
+    next(e);
   } finally {
     res.redirect("/");
   }

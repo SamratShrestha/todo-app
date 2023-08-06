@@ -82,33 +82,36 @@
         </table>
     </section>
 </div>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 <script>
-  function filter(params){
-    $.ajax({
-      url: "/",
-      method: "GET", 
-      data: params,
-      success: function(data) {
-        $('#content').empty().append(data)
-      },
-      error: function(xhr, status, error) {
-          console.error("Error occurred:", error);
-      }
-    });
-  }
+  $(document).ready(function(){
+    function filter(params){
+      $.ajax({
+        url: "/",
+        method: "GET", 
+        data: params,
+        success: function(data) {
+          $('#content').empty().append(data)
+        },
+        error: function(xhr, status, error) {
+            console.error("Error occurred:", error);
+        }
+      });
+    }
+    $('#done-task').click(function(){
+        let params = {
+          status: "completed",
+          isAjax: true,
+        }
+        filter(params);
+    })
+    $('#upcoming-task').click(function(){
+        let params = {
+          upcomming: true,
+          isAjax: true,
+        }
+        filter(params);
+    })
+  })
 
-  $('#done-task').click(function(){
-      let params = {
-        status: "completed",
-        isAjax: true,
-      }
-      filter(params);
-  })
-  $('#upcoming-task').click(function(){
-      let params = {
-        upcomming: true,
-        isAjax: true,
-      }
-      filter(params);
-  })
 </script>
