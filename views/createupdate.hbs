@@ -1,0 +1,83 @@
+<div class="container mt-2">
+    <header>
+        <h1>
+          {{title}}
+        </h1>
+    </header>
+    <section>
+        <form class="form-signin needs-validation" method="post" novalidate>
+          {{#each errors}}
+            <div class="alert alert-danger">
+                {{this.msg}}
+            </div>
+          {{/each}}
+          <label>
+            Task Name
+          </label>
+          <input {{#if name }} value="{{name}}" {{/if}} type="text" name="name" class="form-control" placeholder="Task Name" required minlength="3" autofocus="">
+          <div class="invalid-feedback">
+            Name must be at least 3 chars long
+          </div>
+          <br/>
+          <label>
+            Task Description
+          </label>
+          <textarea minlength="10" name="description" class="form-control" placeholder="Description"  required autofocus="">{{#if description}}{{description}}{{/if}}</textarea>
+          <div class="invalid-feedback">
+            Description must be at least 10 chars long
+          </div>
+          <br/>
+          <label>
+            Due Date
+          </label>
+          <input {{#if dueDate }} value="{{formatDateRender dueDate }}" {{/if}} type="datetime-local" name="dueDate" class="form-control" placeholder="Due Date" min="{{formatDateRender "" }}" required autofocus="">
+          <div class="invalid-feedback">
+            Date must be greater than the current date
+          </div>
+          <br/>
+          <label>
+            Priority
+          </label>
+          <select name="priority" class="form-control">
+            <option value="low" {{#if_eql priority  "low" }} selected {{/if_eql}}>Low</option>
+            <option value="medium" {{#if_eql priority  "medium" }} selected {{/if_eql}}>Medium</option>
+            <option value="high" {{#if_eql priority  "high" }} selected {{/if_eql}}>High</option>
+          </select>
+          <br/>
+          <label>
+            Status
+          </label>
+          <select name="status" class="form-control">
+            <option value="notstarted" {{#if_eql status  "notstarted" }} selected {{/if_eql}}>Not Started</option>
+            <option value="inprogress" {{#if_eql status  "inprogress" }} selected {{/if_eql}}>In Progress</option>
+            <option value="completed" {{#if_eql status  "completed" }} selected {{/if_eql}}>Completed</option>
+          </select>
+          <br/>
+          <button type="submit" class="btn btn-lg btn-primary btn-block">{{title}}</button>
+          <a href="/" class="btn btn-lg btn-danger btn-block">Back</a>
+          <br/>
+        </form>
+    </section>
+</div>
+<script>
+function getDate(){
+  return new Date()
+}
+(() => {
+  'use strict';
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll('.needs-validation');
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms).forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
+})();
+</script>

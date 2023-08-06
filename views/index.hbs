@@ -1,0 +1,114 @@
+<div class="container mt-2" id="content">
+    <header>
+        <h2>Welcome</h2>
+        <p>List Todo Page</p>
+    </header>
+
+    <section>
+        <a href="/create" class="btn btn-sm btn-primary"> 
+          Create
+        </a> 
+        <div class="d-flex justify-content-end">
+          <div class="p-2 bd-highlight">
+            <a href="/" class="btn btn-sm btn-primary"> 
+              All
+            </a> 
+          </div>
+          <div class="p-2 bd-highlight">
+            <button id="done-task" class="btn btn-sm btn-info"> 
+              Done Tasks
+            </button> 
+          </div>
+          <div class="p-2 bd-highlight">
+            <button id="upcoming-task" class="btn btn-sm btn-secondary"> 
+              Upcoming Tasks
+            </button> 
+          </div>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Task</th>
+              <th scope="col">Description</th>
+              <th scope="col">Due Date</th>
+              <th scope="col">Priority</th>
+              <th scope="col">Status</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#if results}}
+              {{#each results}}
+                <tr>
+                  <td>
+                    {{this.name}}
+                  </td>
+                  <td>
+                    {{this.description}}
+                  </td>
+                  <td>
+                    {{formatDate this.dueDate }}
+                  </td>
+                  <td>
+                    {{this.priority}}
+                  </td>
+                  <td>
+                    {{this.status}}
+                  </td>
+                  <td>
+                    <a href="/update/{{this._id}}" class="btn btn-sm btn-primary">Update</a>
+                    <a href="/delete/{{this._id}}" class="btn btn-sm btn-danger">Delete</a>
+                  </td>
+                </tr>
+              {{/each}}
+            {{else}}
+              <tr>
+                <td>
+                  No data found
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+              </tr>
+            {{/if}}
+          </tbody>
+        </table>
+    </section>
+</div>
+<script>
+  function filter(params){
+    $.ajax({
+      url: "/",
+      method: "GET", 
+      data: params,
+      success: function(data) {
+        $('#content').empty().append(data)
+      },
+      error: function(xhr, status, error) {
+          console.error("Error occurred:", error);
+      }
+    });
+  }
+
+  $('#done-task').click(function(){
+      let params = {
+        status: "completed",
+        isAjax: true,
+      }
+      filter(params);
+  })
+  $('#upcoming-task').click(function(){
+      let params = {
+        upcomming: true,
+        isAjax: true,
+      }
+      filter(params);
+  })
+</script>
